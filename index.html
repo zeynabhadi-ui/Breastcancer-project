@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Breast Cancer — Zeynab Hadi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --rose:    #B5344A;
+      --rose-lt: #F2D6DB;
+      --rose-dk: #7D1E30;
+      --ink:     #12090D;
+      --mist:    #FAF5F7;
+      --warm:    #EAD9DE;
+      --white:   #FFFFFF;
+      --text:    #2E1820;
+      --sub:     #7A5F67;
+      --gold:    #C9973A;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; color: var(--text); background: var(--white); line-height: 1.6; }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 200;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--warm);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5vw; height: 56px;
+    }
+    .nav-logo { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--rose-dk); text-decoration: none; }
+    .nav-links { display: flex; gap: 0; list-style: none; }
+    .nav-links a {
+      text-decoration: none; font-size: 0.78rem; font-weight: 500;
+      color: var(--sub); letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 0 1rem; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--rose); }
+
+    /* ── SLIDE SHARED ── */
+    .slide {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 6rem 10vw;
+      position: relative;
+    }
+    .slide-number {
+      position: absolute; top: 2rem; right: 3rem;
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--warm);
+    }
+    .section-label {
+      display: inline-block;
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--rose);
+      border-bottom: 1px solid var(--rose);
+      padding-bottom: 0.2em; margin-bottom: 1.2rem;
+    }
+    .slide-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      line-height: 1.12; color: var(--ink);
+      margin-bottom: 0.8rem;
+    }
+    .slide-subtitle {
+      font-size: 1rem; color: var(--sub); max-width: 55ch;
+      line-height: 1.8; margin-bottom: 2.5rem;
+    }
+
+    /* ── VOICE SCRIPT BOX ── */
+    .voice-box {
+      margin-top: 3rem;
+      border-top: 1px solid var(--warm);
+      padding-top: 1.5rem;
+      display: flex; gap: 1rem; align-items: flex-start;
+    }
+    .voice-icon {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--rose-lt); color: var(--rose-dk);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem; flex-shrink: 0; margin-top: 0.1rem;
+    }
+    .voice-label {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--rose);
+      margin-bottom: 0.4rem;
+    }
+    .voice-text {
+      font-size: 0.88rem; color: var(--sub); line-height: 1.8;
+      font-style: italic; max-width: 72ch;
+    }
+
+    /* ══════════════════════════════
+       SLIDE 0 — COVER
+    ══════════════════════════════ */
+    #cover {
+      background: var(--ink);
+      align-items: center; text-align: center;
+      gap: 0;
+    }
+    .cover-ribbon {
+      width: 80px; height: 80px; margin: 0 auto 2.5rem;
+    }
+    .cover-tag {
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--rose);
+      margin-bottom: 1.2rem;
+    }
+    #cover .slide-title {
+      color: var(--white);
+      font-size: clamp(2.4rem, 5vw, 4.5rem);
+      margin-bottom: 0.6rem;
+    }
+    #cover .slide-title em { color: var(--rose); font-style: italic; }
+    .cover-tagline {
+      font-size: 1rem; color: rgba(255,255,255,0.45);
+      letter-spacing: 0.04em; margin-bottom: 4rem;
+    }
+    .cover-meta {
+      display: flex; gap: 4rem; justify-content: center;
+      flex-wrap: wrap;
+    }
+    .cover-meta-item { text-align: center; }
+    .cover-meta-item .meta-role {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--rose);
+      margin-bottom: 0.35rem;
+    }
+    .cover-meta-item .meta-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem; color: var(--white);
+    }
+    .cover-meta-item .meta-detail {
+      font-size: 0.8rem; color: rgba(255,255,255,0.4); margin-top: 0.1rem;
+    }
+    #cover .voice-box { border-color: rgba(255,255,255,0.1); }
+    #cover .voice-text { color: rgba(255,255,255,0.4); }
+    #cover .voice-label { color: var(--rose); }
+    #cover .slide-number { color: rgba(255,255,255,0.1); }
+
+    /* ══════════════════════════════
+       PART DIVIDERS
+    ══════════════════════════════ */
+    .part-divider {
+      background: var(--rose-dk);
+      min-height: 30vh;
+      display: flex; align-items: center;
+      padding: 3rem 10vw;
+    }
+    .part-divider-inner { }
+    .part-num {
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.18em;
+      text-transform: uppercase; color: rgba(255,255,255,0.4);
+      margin-bottom: 0.6rem;
+    }
+    .part-divider h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      color: var(--white); line-height: 1.1;
+    }
+    .part-divider p {
+      font-size: 0.95rem; color: rgba(255,255,255,0.5);
+      margin-top: 0.8rem; max-width: 50ch;
+    }
+
+    /* ══════════════════════════════
+       INTRO SLIDES
+    ══════════════════════════════ */
+    #intro-1 { background: var(--mist); }
+    #intro-2 { background: var(--white); }
+    #intro-3 { background: var(--mist); }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+
+    .stat-block {
+      background: var(--white);
+      border: 1px solid var(--warm);
+      border-top: 3px solid var(--rose);
+      border-radius: 6px;
+      padding: 1.8rem;
+    }
+    .stat-block strong {
+      display: block;
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem; color: var(--rose-dk);
+      margin-bottom: 0.3rem;
+    }
+    .stat-block p { font-size: 0.85rem; color: var(--sub); line-height: 1.65; }
+
+    .type-list { display: flex; flex-direction: column; gap: 1rem; }
+    .type-item {
+      display: flex; gap: 1rem; align-items: flex-start;
+      padding: 1rem 1.2rem;
+      background: var(--mist);
+      border-radius: 6px;
+      border-left: 3px solid var(--rose);
+    }
+    .type-item h4 { font-weight: 600; font-size: 0.92rem; color: var(--ink); margin-bottom: 0.2rem; }
+    .type-item p { font-size: 0.83rem; color: var(--sub); line-height: 1.6; }
+
+    .risk-two { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+    .risk-col h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem; color: var(--ink);
+      margin-bottom: 1rem; padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--warm);
+    }
+    .risk-col ul { list-style: none; }
+    .risk-col li {
+      display: flex; gap: 0.7rem; align-items: flex-start;
+      font-size: 0.88rem; color: var(--text);
+      padding: 0.55rem 0; border-bottom: 1px solid var(--mist);
+      line-height: 1.5;
+    }
+    .risk-col li::before {
+      content: ''; display: block; flex-shrink: 0;
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--rose); margin-top: 0.55em;
+    }
+
+    .symptom-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.2rem; }
+    .symptom-item {
+      background: var(--white);
+      border: 1px solid var(--warm);
+      border-radius: 8px;
+      padding: 1.4rem;
+    }
+    .symptom-item .s-icon { font-size: 1.5rem; margin-bottom: 0.6rem; }
+    .symptom-item h4 { font-weight: 600; font-size: 0.9rem; color: var(--ink); margin-bottom: 0.3rem; }
+    .symptom-item p { font-size: 0.82rem; color: var(--sub); line-height: 1.6; }
+
+    /* ══════════════════════════════
+       TREATMENT SLIDES
+    ══════════════════════════════ */
+    #treat-1 { background: var(--white); }
+    #treat-2 { background: var(--mist); }
+    #treat-3 { background: var(--white); }
+
+    .treat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 1.4rem; }
+    .treat-card {
+      background: var(--white);
+      border: 1px solid var(--warm);
+      border-top: 3px solid var(--rose);
+      border-radius: 6px;
+      padding: 1.6rem;
+    }
+    .treat-card h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem; color: var(--rose-dk);
+      margin-bottom: 0.5rem;
+    }
+    .treat-card p { font-size: 0.86rem; color: var(--sub); line-height: 1.75; }
+
+    .stage-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    .stage-table th {
+      background: var(--rose-dk); color: var(--white);
+      padding: 0.8rem 1rem; text-align: left;
+      font-weight: 600; font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .stage-table td { padding: 0.85rem 1rem; border-bottom: 1px solid var(--warm); color: var(--text); vertical-align: top; }
+    .stage-table tr:nth-child(even) td { background: var(--mist); }
+
+    .side-effects { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .se-card {
+      background: var(--mist);
+      border-radius: 8px; padding: 1.2rem 1.4rem;
+    }
+    .se-card h4 { font-weight: 600; font-size: 0.88rem; color: var(--rose-dk); margin-bottom: 0.5rem; }
+    .se-card ul { list-style: none; }
+    .se-card li { font-size: 0.83rem; color: var(--sub); padding: 0.25rem 0; }
+    .se-card li::before { content: '— '; color: var(--rose); }
+
+    /* ══════════════════════════════
+       RESEARCH SLIDES
+    ══════════════════════════════ */
+    #res-1 { background: var(--ink); }
+    #res-2 { background: #1A0D12; }
+    #res-3 { background: var(--ink); }
+
+    #res-1 .slide-title, #res-2 .slide-title, #res-3 .slide-title { color: var(--white); }
+    #res-1 .slide-subtitle, #res-2 .slide-subtitle, #res-3 .slide-subtitle { color: rgba(255,255,255,0.5); }
+    #res-1 .section-label, #res-2 .section-label, #res-3 .section-label { color: var(--rose); border-color: var(--rose); }
+    #res-1 .slide-number, #res-2 .slide-number, #res-3 .slide-number { color: rgba(255,255,255,0.08); }
+    #res-1 .voice-box, #res-2 .voice-box, #res-3 .voice-box { border-color: rgba(255,255,255,0.1); }
+    #res-1 .voice-text, #res-2 .voice-text, #res-3 .voice-text { color: rgba(255,255,255,0.35); }
+
+    .brca-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .brca-card {
+      border: 1px solid rgba(255,255,255,0.1);
+      border-top: 2px solid var(--rose);
+      border-radius: 6px;
+      padding: 1.8rem;
+      background: rgba(255,255,255,0.04);
+    }
+    .brca-card h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem; color: var(--white);
+      margin-bottom: 0.6rem;
+    }
+    .brca-card p { font-size: 0.86rem; color: rgba(255,255,255,0.5); line-height: 1.75; }
+    .brca-card .risk-pct {
+      display: inline-block; margin-top: 0.8rem;
+      font-size: 1.6rem; font-family: 'Playfair Display', serif;
+      color: var(--rose); font-style: italic;
+    }
+    .brca-card .risk-label { font-size: 0.75rem; color: rgba(255,255,255,0.3); }
+
+    .timeline-res { display: flex; flex-direction: column; gap: 1.8rem; max-width: 700px; }
+    .tl-item { display: grid; grid-template-columns: 80px 1fr; gap: 1.5rem; align-items: start; }
+    .tl-year {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem; color: var(--gold);
+      font-style: italic; padding-top: 0.1rem;
+    }
+    .tl-body h4 { font-weight: 600; font-size: 0.92rem; color: var(--white); margin-bottom: 0.3rem; }
+    .tl-body p { font-size: 0.83rem; color: rgba(255,255,255,0.45); line-height: 1.65; }
+
+    .future-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.2rem; }
+    .future-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px; padding: 1.5rem;
+    }
+    .future-card .f-icon { font-size: 1.6rem; margin-bottom: 0.7rem; }
+    .future-card h4 { font-weight: 600; font-size: 0.9rem; color: var(--white); margin-bottom: 0.4rem; }
+    .future-card p { font-size: 0.82rem; color: rgba(255,255,255,0.4); line-height: 1.65; }
+
+    /* ══════════════════════════════
+       REFERENCES
+    ══════════════════════════════ */
+    #references { background: var(--mist); }
+    .ref-list { list-style: none; display: flex; flex-direction: column; gap: 0; max-width: 800px; }
+    .ref-list li {
+      font-size: 0.85rem; color: var(--sub);
+      padding: 0.85rem 0; border-bottom: 1px solid var(--warm);
+      line-height: 1.7;
+    }
+    .ref-list li strong { color: var(--ink); }
+    .ref-num { color: var(--rose); font-weight: 600; margin-right: 0.5rem; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .slide { padding: 4rem 6vw; }
+      .two-col, .three-col, .risk-two, .brca-cards, .side-effects { grid-template-columns: 1fr; gap: 1.5rem; }
+      .cover-meta { gap: 2rem; }
+      nav .nav-links { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#cover">Breast Cancer</a>
+  <ul class="nav-links">
+    <li><a href="#cover">Cover</a></li>
+    <li><a href="#part-intro">Introduction</a></li>
+    <li><a href="#part-treat">Treatment</a></li>
+    <li><a href="#part-res">Research</a></li>
+    <li><a href="#references">References</a></li>
+  </ul>
+</nav>
+
+<!-- ═══════════════════════════════════
+     SLIDE 0 — COVER PAGE
+═══════════════════════════════════ -->
+<section class="slide" id="cover">
+  <div class="slide-number">00</div>
+  <svg class="cover-ribbon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="50" cy="50" r="48" fill="rgba(181,52,74,0.15)" stroke="rgba(181,52,74,0.3)" stroke-width="0.8"/>
+    <path d="M50 28 C50 28 68 37 68 50 C68 62 58 66 50 73 C42 80 40 88 45 94 C47 97 49 98 50 98 C51 98 53 97 55 94 C60 88 58 80 50 73 C42 66 32 62 32 50 C32 37 50 28 50 28Z" fill="#B5344A"/>
+  </svg>
+  <p class="cover-tag">Iran University of Medical Sciences</p>
+  <h1 class="slide-title">Breast <em>Cancer</em></h1>
+  <p class="cover-tagline">Introduction · Treatment · Genetics &amp; BRCA Research</p>
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <div class="meta-role">Presented by</div>
+      <div class="meta-name">Zeynab Hadi</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="meta-role">Supervisor</div>
+      <div class="meta-name">Dr. Ehsanzadeh</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="meta-role">Institution</div>
+      <div class="meta-name">Iran University of Medical Sciences</div>
+    </div>
+  </div>
+  <div class="voice-box">
+    <div class="voice-icon">🎙</div>
+    <div>
+      <div class="voice-label">30-Second Script</div>
+      <p class="voice-text">"Good day. My name is Zeynab Hadi, and this presentation was prepared under the supervision of Dr. Ehsanzadeh at Iran University of Medical Sciences. Today, I will walk you through three parts: an introduction to breast cancer, an overview of current treatment approaches, and finally, a look at the latest genetics research — specifically what we now know about BRCA mutations and what they mean for patients and families."</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════
+     PART 1 — INTRODUCTION
+═══════════════════════════════════ -->
+<div class="part-divider" id="part-intro">
+  <div class="part-divider-inner">
+    <div class="part-num">Part One</div>
+    <h2>Introduction</h2>
+    <p>What breast cancer is, who it affects, and how to recognize it.</p>
+  </div>
+</div>
+
+<!-- INTRO SLIDE 1 — What is it + global burden -->
+<section class="slide" id="intro-1">
+  <div class="slide-number">01</div>
+  <div class="section-label">Introduction</div>
+  <h2 class="slide-title">What Is Breast Cancer?</h2>
+  <p class="slide-subtitle">An uncontrolled growth of abnormal cells in breast tissue — the most commonly diagnosed cancer worldwide.</p>
+  <div class="two-col">
+    <div>
+      <p style="font-size:0.95rem;line-height:1.85;color:var(--text);margin-bottom:1.2rem;">Breast cancer begins when cells in the breast — most often in the milk ducts or lobules — start dividing abnormally. These cells can form a tumor and, if not caught early, invade surrounding tissue or spread to distant organs through the lymphatic system and bloodstream.</p>
+      <p style="font-size:0.95rem;line-height:1.85;color:var(--text);margin-bottom:1.2rem;">It is not one disease. There are multiple subtypes — each with different behavior, prognosis, and treatment. The receptor status of the tumor (ER, PR, HER2) is critical in guiding therapy.</p>
+      <p style="font-size:0.95rem;line-height:1.85;color:var(--text);">While it mainly affects women, men account for roughly 1% of all cases. Age is the single largest risk factor; most diagnoses occur after age 50.</p>
+    </div>
+    <div class="three-col" style="grid-template-columns:1fr 1fr; gap:1rem;">
+      <div class="stat-block"><strong>2.3M</strong><p>New cases diagnosed globally every year (WHO, 2022)</p></div>
+      <div class="stat-block"><strong>1 in 8</strong><p>Women will develop breast cancer in their lifetime</p></div>
+      <div class="stat-block"><strong>99%</strong><p>5-year survival rate when detected at Stage I</p></div>
+      <div class="stat-block"><strong>#1</strong><p>Most common cancer among women worldwide</p></div>
+    </div>
+  </div>
+  <div class="voice-box">
+    <div class="voice-icon">🎙</div>
+    <div>
+      <div class="voice-label">30-Second Script</div>
+      <p class="voice-text">"Breast cancer is the uncontrolled growth of cells in breast tissue. It is the most commonly diagnosed cancer in women worldwide, with 2.3 million new cases every year. When detected early — at Stage I — the five-year survival rate is nearly 100%. This is why education and awareness are so critical: understanding this disease saves lives."</p>
+    </div>
+  </div>
+</section>
+
+<!-- INTRO SLIDE 2 — Types & Risk Factors -->
+<section class="slide" id="intro-2">
+  <div class="slide-number">02</div>
+  <div class="section-label">Introduction</div>
+  <h2 class="slide-title">Types &amp; Risk Factors</h2>
+  <p class="slide-subtitle">Breast cancer has several subtypes, and risk is shaped by both genetics and lifestyle.</p>
+  <div class="two-col">
+    <div>
+      <h3 style="font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--ink);margin-bottom:1rem;">Common Types</h3>
+      <div class="type-list">
+        <div class="type-item"><div><h4>Invasive Ductal Carcinoma (IDC)</h4><p>The most common type (~80%). Starts in milk ducts, invades surrounding tissue.</p></div></div>
+        <div class="type-item"><div><h4>Invasive Lobular Carcinoma (ILC)</h4><p>Begins in milk-producing lobules. Often harder to detect on mammography.</p></div></div>
+        <div class="type-item"><div><h4>Triple-Negative (TNBC)</h4><p>Lacks ER, PR, and HER2 receptors. More aggressive; treated primarily with chemotherapy.</p></div></div>
+        <div class="type-item"><div><h4>HER2-Positive</h4><p>Overexpresses HER2 protein. Responds well to targeted therapies like trastuzumab.</p></div></div>
+      </div>
+    </div>
+    <div class="risk-two" style="grid-template-columns:1fr; gap:1.5rem;">
+      <div class="risk-col">
+        <h3>Non-Modifiable</h3>
+        <ul>
+          <li>Female sex and increasing age</li>
+          <li>BRCA1 / BRCA2 gene mutations</li>
+          <li>Family history of breast or ovarian cancer</li>
+          <li>Dense breast tissue</li>
+          <li>Early menarche or late menopause</li>
+        </ul>
+      </div>
+      <div class="risk-col">
+        <h3>Modifiable</h3>
+        <ul>
+          <li>Physical inactivity and obesity</li>
+          <li>Alcohol consumption</li>
+          <li>Combined hormone replacement therapy</li>
+          <li>Smoking</li>
+          <li>Never breastfeeding</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="voice-box">
+    <div class="voice-icon">🎙</div>
+    <div>
+      <div class="voice-label">30-Second Script</div>
+      <p class="voice-text">"There are several types of breast cancer. The most common is invasive ductal carcinoma, accounting for about 80% of cases. Risk factors fall into two categories: those we cannot change — like our genes and family history — and those we can modify, such as physical activity, alcohol consumption, and body weight. Understanding these helps us identify who needs closer monitoring."</p>
+    </div>
+  </div>
+</section>
+
+<!-- INTRO SLIDE 3 — Signs & Symptoms -->
+<section class="slide" id="intro-3">
+  <div class="slide-number">03</div>
+  <div class="section-label">Introduction</div>
+  <h2 class="slide-title">Signs &amp; Symptoms</h2>
+  <p class="slide-subtitle">Early breast cancer often causes no symptoms at all — which is exactly why scheduled screening matters so much.</p>
+  <div class="symptom-row">
+    <div class="symptom-item"><div class="s-icon">🔵</div><h4>Lump or Thickening</h4><p>A new lump in the breast or underarm that feels different from surrounding tissue.</p></div>
+    <div class="symptom-item"><div class="s-icon">📐</div><h4>Change in Shape or Size</h4><p>Unexplained change in the contour or size of one breast.</p></div>
+    <div class="symptom-item"><div class="s-icon">🩹</div><h4>Skin Changes</h4><p>Dimpling, puckering, redness, or peau d'orange (orange-peel texture).</p></div>
+    <div class="symptom-item"><div class="s-icon">🔴</div><h4>Nipple Changes</h4><p>Inversion of a previously normal nipple or changes in areola appearance.</p></div>
+    <div class="symptom-item"><div class="s-icon">💧</div><h4>Nipple Discharge</h4><p>Discharge other than breast milk — especially if bloody or from one breast only.</p></div>
+    <div class="symptom-item"><div class="s-icon">🌡️</div><h4>Warmth or Redness</h4><p>Persistent warmth and redness may indicate inflammatory breast cancer.</p></div>
+  </div>
+  <div class="voice-box">
+    <div class="voice-icon">🎙</div>
+    <div>
+      <div class="voice-label">30-Second Script</div>
+      <p class="voice-text">"The most recognized symptom of breast cancer is a new lump or thickening in the breast or underarm. However, breast cancer can also present as skin changes, nipple inversion, discharge, or unexplained changes in breast shape. Importantly, many early-stage cancers produce no symptoms at all — which is why regular screening with mammography is essential, especially after age 40."</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════
+     PART 2 — TREATMENT
+═══════════════════════════════════ -->
+<div class="part-divider" id="part-treat">
+  <div class="part-divider-inner">
+    <div class="part-num">Part Two</div>
+    <h2>Treatment</h2>
+    <p>How breast cancer is staged and the main modalities used to treat it.</p>
+  </div>
+</div>
+
+<!-- TREAT SLIDE 1 — Staging -->
+<section class="slide" id="treat-1">
+  <div class="slide-number">04</div>
+  <div class="section-label">Treatment</div>
+  <h2 class="slide-title">Staging the Disease</h2>
+  <p class="slide-subtitle">Treatment decisions depend entirely on how far the cancer has spread. The TNM staging system is the global standard.</p>
+  <table class="stage-table">
+    <thead>
+      <tr><th>Stage</th><th>Description</th><th>5-Year Survival</th><th>Primary Approach</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Stage 0</strong> (DCIS)</td><td>Non-invasive; cancer cells confined to ducts</td><td>~99%</td><td>Surgery ± radiation</td></tr>
+      <tr><td><strong>Stage I</strong></td><td>Tumor ≤2 cm, no lymph node spread</td><td>~99%</td><td>Surgery + adjuvant therapy</td></tr>
+      <tr><td><strong>Stage II</strong></td><td>Tumor 2–5 cm or limited lymph node involvement</td><td>~86%</td><td>Surgery + chemo/radiation</td></tr>
+      <tr><td><strong>Stage III</strong></td><td>Larger tumor with more lymph node involvement</td><td>~57%</td><td>Neoadjuvant chemo + surgery</td></tr>
+      <tr><td><strong>Stage IV</strong></td><td>Metastatic — spread to bone, lungs, liver, brain</td><td>~28%</td><td>Systemic therapy (palliative)</td></tr>
+    </tbody>
+  </table>
+  <div class="voice-box">
+    <div class="voice-icon">🎙</div>
+    <div>
+      <div class="voice-label">30-Second Script</div>
+      <p class="voice-text">"Before treatment can begin, the cancer must be staged. Staging tells us how far the disease has spread — from Stage 0, which is non-invasive and nearly always curable, to Stage IV, which is metastatic. As this table shows, survival rates drop significantly with each stage. This reinforces how vital early detection is: a Stage I diagnosis carries a 99% five-year survival rate."</p>
+    </div>
+  </div>
+</section>
+
+<!-- TREAT SLIDE 2 — Treatment Modalities -->
+<section class="slide" id="treat-2">
+  <div class="slide-number">05</div>
+  <div class="section-label">Treatment</div>
+  <h2 class="slide-title">Treatment Modalities</h2>
+  <p class="slide-subtitle">Most patients receive a combination of treatments tailored to their cancer's stage, subtype, and receptor status.</p>
+  <div class="treat-grid">
+    <div class="treat-card">
+      <h4>Surgery</h4>
+      <p>Lumpectomy (breast-conserving) or mastectomy. Sentinel lymph node biopsy determines lymph node involvement. Reconstruction may follow mastectomy.</p>
+    </div>
+    <div class="treat-card">
+      <h4>Radiation Therapy</h4>
+      <p>High-energy beams destroy remaining cancer cells post-surgery. Standard after lumpectomy; reduces local recurrence risk by 50–70%.</p>
+    </div>
+    <div class="treat-card">
+      <h4>Chemotherapy</h4>
+      <p>Systemic drugs that kill rapidly dividing cells. Given before surgery (neoadjuvant) to shrink tumors, or after (adjuvant) to eliminate microscopic disease.</p>
+    </div>
+    <div class="treat-card">
+      <h4>Hormone Therapy</h4>
+      <p>For ER+/PR+ cancers. Tamoxifen or aromatase inhibitors block estrogen's growth-promoting effects. Typically taken for 5–10 years.</p>
+    </div>
+    <div class="treat-card">
+      <h4>Targeted Therapy</h4>
+      <p>Drugs targeting specific proteins — trastuzumab (Herceptin) for HER2+ cancers, CDK4/6 inhibitors (palbociclib) for advanced HR+ disease.</p>
+    </div>
+    <div class="treat-card">
+      <h4>Immunotherapy</h4>
+      <p>Checkpoint inhibitors such as pembrolizumab are now approved for high-risk triple-negative breast cancer in combination with chemotherapy.</p>
+    </div>
+  </div>
+  <div class="voice-box">
+    <div class="voice-icon">🎙</div>
+    <div>
+      <div class="voice-label">30-Second Script</div>
+      <p class="voice-text">"Treatment for breast cancer is rarely a single approach. Surgery removes the primary tumor; radiation cleans up any remaining local disease; chemotherapy targets cancer cells throughout the body; hormone therapy blocks the estrogen that feeds many breast cancers; and targeted therapies like trastuzumab attack specific molecular features of the tumor. More recently, immunotherapy has been added for aggressive triple-negative cases."</p>
+    </div>
+  </div>
+</section>
+
+<!-- TREAT SLIDE 3 — Side Effects & Survivorship -->
+<section class="slide" id="treat-3">
+  <div class="slide-number">06</div>
+  <div class="section-label">Treatment</div>
+  <h2 class="slide-title">Side Effects &amp; Survivorship</h2>
+  <p class="slide-subtitle">Treating the cancer is only part of the picture. Managing side effects and supporting long-term quality of life are equally important.</p>
+  <div class="side-effects">
+    <div class="se-card">
+      <h4>Surgery</h4>
+      <ul>
+        <li>Pain and swelling at incision site</li>
+        <li>Lymphedema if lymph nodes removed</li>
+        <li>Numbness or altered sensation</li>
+        <li>Body image and psychological impact</li>
+      </ul>
+    </div>
+    <div class="se-card">
+      <h4>Chemotherapy</h4>
+      <ul>
+        <li>Fatigue and nausea</li>
+        <li>Hair loss (alopecia)</li>
+        <li>Increased infection risk (neutropenia)</li>
+        <li>Chemobrain (cognitive fog)</li>
+      </ul>
+    </div>
+    <div class="se-card">
+      <h4>Radiation</h4>
+      <ul>
+        <li>Skin irritation and fatigue</li>
+        <li>Breast swelling or fibrosis</li>
+        <li>Rare: cardiac effects (left-sided radiation)</li>
+        <li>Fatigue lasting weeks after treatment</li>
+      </ul>
+    </div>
+    <div class="se-card">
+      <h4>Hormone Therapy</h4>
+      <ul>
+        <li>Menopausal symptoms (hot flashes)</li>
+        <li>Joint pain and bone density loss</li>
+        <li>Mood changes</li>
+        <li>Increased blood clot risk (tamoxifen)</li>
+      </ul>
+    </div>
+  </div>
+  <p style="margin-top:2rem;font-size:0.88rem;color:var(--sub);max-width:70ch;line-height:1.8;">Survivorship care includes regular follow-up, monitoring for recurrence, bone density screening, psychological support, and healthy lifestyle counseling. Over 3.8 million breast cancer survivors are living in the US alone.</p>
+  <div class="voice-box">
+    <div class="voice-icon">🎙</div>
+    <div>
+      <div class="voice-label">30-Second Script</div>
+      <p class="voice-text">"Every treatment modality comes with its own side-effect profile. Surgeons manage lymphedema; oncologists watch for neutropenia during chemotherapy; radiation can cause skin changes and fatigue. Hormone therapy, while essential for ER-positive cancers, can cause joint pain and bone loss. A good breast cancer care team addresses not just the tumor, but the whole patient's experience — including life after treatment."</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════
+     PART 3 — RESEARCH: GENETICS & BRCA
+═══════════════════════════════════ -->
+<div class="part-divider" id="part-res" style="background:#7D1E30;">
+  <div class="part-divider-inner">
+    <div class="part-num">Part Three</div>
+    <h2>Genetics &amp; BRCA Research</h2>
+    <p>What we now know about inherited mutations and where the science is heading.</p>
+  </div>
+</div>
+
+<!-- RES SLIDE 1 — BRCA Genes -->
+<section class="slide" id="res-1">
+  <div class="slide-number">07</div>
+  <div class="section-label">Research</div>
+  <h2 class="slide-title">The BRCA1 &amp; BRCA2 Genes</h2>
+  <p class="slide-subtitle">These tumor suppressor genes normally protect us. When mutated, lifetime cancer risk rises dramatically.</p>
+  <div class="brca-cards">
+    <div class="brca-card">
+      <h4>BRCA1 — Chromosome 17</h4>
+      <p>BRCA1 helps repair double-strand DNA breaks via homologous recombination. Loss-of-function mutations remove this repair checkpoint, allowing DNA damage to accumulate in breast and ovarian cells.</p>
+      <span class="risk-pct">55–72%</span>
+      <span class="risk-label"> — Lifetime breast cancer risk</span>
+      <p style="margin-top:0.6rem;">Also associated with up to 44% lifetime risk of ovarian cancer.</p>
+    </div>
+    <div class="brca-card">
+      <h4>BRCA2 — Chromosome 13</h4>
+      <p>BRCA2 also participates in homologous recombination repair. Mutations are associated with breast cancer in both women and men, as well as pancreatic and prostate cancers.</p>
+      <span class="risk-pct">45–69%</span>
+      <span class="risk-label"> — Lifetime breast cancer risk</span>
+      <p style="margin-top:0.6rem;">Male breast cancer risk: 6–8%. Also raises ovarian cancer risk to ~17%.</p>
+    </div>
+    <div class="brca-card">
+      <h4>Inheritance Pattern</h4>
+      <p>BRCA mutations follow an autosomal dominant pattern. A child of a carrier has a 50% chance of inheriting the mutation. Most carriers inherit the mutation from one parent.</p>
+      <p style="margin-top:0.8rem;">Prevalence is approximately 1 in 400 in the general population, but 1 in 40 in those of Ashkenazi Jewish descent.</p>
+    </div>
+    <div class="brca-card">
+      <h4>Testing &amp; Counseling</h4>
+      <p>Genetic testing is recommended for those with a strong family history — two or more first-degree relatives with breast/ovarian cancer, or any relative with a known BRCA mutation.</p>
+      <p style="margin-top:0.8rem;">Pre- and post-test genetic counseling is essential to help patients understand results and implications for their family.</p>
+    </div>
+  </div>
+  <div class="voice-box">
+    <div class="voice-icon">🎙</div>
+    <div>
+      <div class="voice-label">30-Second Script</div>
+      <p class="voice-text">"BRCA1 and BRCA2 are tumor suppressor genes that normally repair damaged DNA. When a person inherits a mutated copy, this repair mechanism fails, and breast and ovarian cells become vulnerable to malignant transformation. Carriers of BRCA1 mutations face a lifetime breast cancer risk of up to 72%, and BRCA2 carriers up to 69% — compared to around 12% in the general population. Identifying carriers early is life-saving."</p>
+    </div>
+  </div>
+</section>
+
+<!-- RES SLIDE 2 — Research Timeline -->
+<section class="slide" id="res-2">
+  <div class="slide-number">08</div>
+  <div class="section-label">Research</div>
+  <h2 class="slide-title">Key Discoveries in BRCA Research</h2>
+  <p class="slide-subtitle">From gene discovery to targeted therapy — three decades of breakthroughs.</p>
+  <div class="timeline-res">
+    <div class="tl-item">
+      <div class="tl-year">1990</div>
+      <div class="tl-body"><h4>BRCA1 Locus Mapped</h4><p>Mary-Claire King's team maps the BRCA1 gene locus to chromosome 17q21, the first evidence of a hereditary breast cancer gene.</p></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">1994–95</div>
+      <div class="tl-body"><h4>BRCA1 &amp; BRCA2 Cloned</h4><p>Both genes are isolated and sequenced, allowing the development of the first genetic tests for inherited breast cancer risk.</p></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">2013</div>
+      <div class="tl-body"><h4>Angelina Jolie &amp; Public Awareness</h4><p>After testing positive for BRCA1, Angelina Jolie publicly undergoes preventive mastectomy. Testing rates surge worldwide — the "Jolie Effect."</p></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">2014–18</div>
+      <div class="tl-body"><h4>PARP Inhibitors Approved</h4><p>Olaparib and talazoparib are approved for BRCA-mutated metastatic breast cancer — the first targeted therapies that exploit the specific DNA repair defect caused by BRCA mutations.</p></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">2020s</div>
+      <div class="tl-body"><h4>Polygenic Risk Scores &amp; Beyond BRCA</h4><p>Research now incorporates hundreds of lower-risk variants into polygenic risk scores (PRS), enabling far more precise individual risk prediction beyond just BRCA1/2.</p></div>
+    </div>
+  </div>
+  <div class="voice-box">
+    <div class="voice-icon">🎙</div>
+    <div>
+      <div class="voice-label">30-Second Script</div>
+      <p class="voice-text">"The story of BRCA research spans thirty years. It began with mapping the BRCA1 locus in 1990, followed quickly by sequencing both genes. Clinical testing followed. By 2013 public awareness surged dramatically. And critically, this research led directly to new therapies: PARP inhibitors, approved between 2014 and 2018, specifically target the DNA repair defect in BRCA-mutated tumors — turning a genetic vulnerability into a therapeutic target."</p>
+    </div>
+  </div>
+</section>
+
+<!-- RES SLIDE 3 — Future Directions -->
+<section class="slide" id="res-3">
+  <div class="slide-number">09</div>
+  <div class="section-label">Research</div>
+  <h2 class="slide-title">Future Directions</h2>
+  <p class="slide-subtitle">Where BRCA and breast cancer genetics research is headed in the coming decade.</p>
+  <div class="future-grid">
+    <div class="future-card">
+      <div class="f-icon">🧬</div>
+      <h4>CRISPR Gene Correction</h4>
+      <p>Experimental CRISPR-based approaches aim to correct BRCA mutations at the germline level. Still in early research, but could one day prevent hereditary breast cancer before it starts.</p>
+    </div>
+    <div class="future-card">
+      <div class="f-icon">📊</div>
+      <h4>Polygenic Risk Scores</h4>
+      <p>Combining hundreds of common low-risk variants into a single score to predict individual lifetime risk more precisely — especially for those without BRCA mutations.</p>
+    </div>
+    <div class="future-card">
+      <div class="f-icon">💊</div>
+      <h4>Next-Generation PARP Inhibitors</h4>
+      <p>New PARP inhibitors with better bioavailability and less toxicity are in trials. Combination with immunotherapy is being studied for triple-negative and BRCA-mutated cancers.</p>
+    </div>
+    <div class="future-card">
+      <div class="f-icon">🩸</div>
+      <h4>Liquid Biopsy</h4>
+      <p>Detection of circulating tumor DNA (ctDNA) in blood can identify cancer earlier, monitor treatment response, and detect recurrence — all without invasive tissue biopsy.</p>
+    </div>
+    <div class="future-card">
+      <div class="f-icon">🤖</div>
+      <h4>AI-Assisted Screening</h4>
+      <p>AI models trained on mammograms can now detect subtle abnormalities and flag high-risk patients for genetic counseling, augmenting radiologist performance.</p>
+    </div>
+    <div class="future-card">
+      <div class="f-icon">🌍</div>
+      <h4>Equity in Genetic Testing</h4>
+      <p>Expanding access to BRCA testing in low- and middle-income countries — including Iran — is a global health priority, as most BRCA-related deaths occur in under-resourced settings.</p>
+    </div>
+  </div>
+  <div class="voice-box">
+    <div class="voice-icon">🎙</div>
+    <div>
+      <div class="voice-label">30-Second Script</div>
+      <p class="voice-text">"The future of BRCA research is both exciting and urgent. CRISPR may one day allow us to correct mutations before cancer develops. Polygenic risk scores will make screening more personalized. Liquid biopsies can detect cancer through a blood draw. And ensuring that genetic testing reaches all populations — including in Iran and across the developing world — is perhaps the most important challenge of all. The science is advancing; access must keep pace."</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════
+     REFERENCES
+═══════════════════════════════════ -->
+<section class="slide" id="references" style="min-height:auto;padding:5rem 10vw;">
+  <div class="section-label">References</div>
+  <h2 class="slide-title">References</h2>
+  <p class="slide-subtitle" style="margin-bottom:2rem;">All statistics and clinical information are drawn from peer-reviewed sources and major health organizations.</p>
+  <ol class="ref-list">
+    <li><span class="ref-num">1.</span><strong>World Health Organization (2022).</strong> Breast cancer fact sheet. WHO Global Cancer Observatory. Retrieved from who.int</li>
+    <li><span class="ref-num">2.</span><strong>American Cancer Society (2023).</strong> Breast Cancer Facts &amp; Figures 2022–2024. Atlanta: American Cancer Society.</li>
+    <li><span class="ref-num">3.</span><strong>Siegel, R.L., Miller, K.D., et al. (2023).</strong> Cancer statistics. CA: A Cancer Journal for Clinicians, 73(1), 17–48.</li>
+    <li><span class="ref-num">4.</span><strong>Kuchenbaecker, K.B., et al. (2017).</strong> Risks of breast, ovarian, and contralateral breast cancer for BRCA1 and BRCA2 mutation carriers. JAMA, 317(23), 2402–2416.</li>
+    <li><span class="ref-num">5.</span><strong>King, M.C., Marks, J.H., &amp; Mandell, J.B. (2003).</strong> Breast and ovarian cancer risks due to inherited mutations in BRCA1 and BRCA2. Science, 302(5645), 643–646.</li>
+    <li><span class="ref-num">6.</span><strong>Robson, M., et al. (2017).</strong> Olaparib for metastatic breast cancer in patients with a germline BRCA mutation. New England Journal of Medicine, 377(6), 523–533.</li>
+    <li><span class="ref-num">7.</span><strong>Couch, F.J., et al. (2017).</strong> Associations between cancer predisposition testing panel genes and breast cancer. JAMA Oncology, 3(9), 1190–1196.</li>
+    <li><span class="ref-num">8.</span><strong>National Comprehensive Cancer Network (NCCN, 2023).</strong> NCCN Clinical Practice Guidelines in Oncology: Breast Cancer. Version 4.2023.</li>
+    <li><span class="ref-num">9.</span><strong>Mehrgou, A., &amp; Akouchekian, M. (2016).</strong> The importance of BRCA1 and BRCA2 genes mutations in breast cancer development. Medical Journal of the Islamic Republic of Iran, 30, 369.</li>
+    <li><span class="ref-num">10.</span><strong>Shiovitz, S., &amp; Korde, L.A. (2015).</strong> Genetics of breast cancer: a topic in evolution. Annals of Oncology, 26(7), 1291–1299.</li>
+  </ol>
+</section>
+
+<!-- FOOTER -->
+<footer style="background:var(--ink);color:rgba(255,255,255,0.3);text-align:center;padding:2rem 5vw;font-size:0.8rem;line-height:1.8;">
+  <p style="color:rgba(255,255,255,0.6);font-family:'Playfair Display',serif;font-size:1rem;margin-bottom:0.4rem;">Zeynab Hadi</p>
+  <p>Supervised by Dr. Ehsanzadeh · Iran University of Medical Sciences</p>
+  <p style="margin-top:0.5rem;">For educational purposes only. Not medical advice.</p>
+</footer>
+
+</body>
+</html>
